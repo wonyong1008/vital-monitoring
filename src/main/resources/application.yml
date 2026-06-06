@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: ${DB_URL:jdbc:h2:mem:vitaldb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
+    url: ${DB_URL:jdbc:h2:mem:vitaldb;MODE=MySQL;DB_CLOSE_DELAY=-1}
     username: ${DB_USERNAME:sa}
     password: ${DB_PASSWORD:}
     driver-class-name: ${DB_DRIVER:org.h2.Driver}

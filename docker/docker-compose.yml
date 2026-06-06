@@ -2,15 +2,18 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:16-alpine
+    image: mysql:8.0
     environment:
-      POSTGRES_DB: vitaldb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret
+      MYSQL_DATABASE: vitaldb
+      MYSQL_USER: vital
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: rootsecret
     ports:
-      - "5432:5432"
+      - "3306:3306"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
   app:
     build:
@@ -19,16 +22,16 @@ services:
     ports:
       - "8080:8080"
     environment:
-      DB_URL: jdbc:postgresql://db:5432/vitaldb
-      DB_USERNAME: postgres
+      DB_URL: jdbc:mysql://db:3306/vitaldb?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: vital
       DB_PASSWORD: secret
-      DB_DRIVER: org.postgresql.Driver
-      JPA_DDL_AUTO: update
-      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      DB_DRIVER: com.mysql.cj.jdbc.Driver
+      JPA_DDL_AUTO: validate
+      JPA_DIALECT: org.hibernate.dialect.MySQLDialect
       AUTH_TOKEN: dev-token-change-in-prod
       VITAL_RISK_TIME_WINDOW_HOURS: 24
     depends_on:
       - db
 
 volumes:
-  postgres_data:
+  mysql_data:
