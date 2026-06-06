@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: vitaldb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/vitaldb
+      DB_USERNAME: postgres
+      DB_PASSWORD: secret
+      DB_DRIVER: org.postgresql.Driver
+      JPA_DDL_AUTO: update
+      JPA_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      AUTH_TOKEN: dev-token-change-in-prod
+      VITAL_RISK_TIME_WINDOW_HOURS: 24
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

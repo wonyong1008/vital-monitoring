@@ -1,0 +1,29 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:h2:mem:vitaldb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:}
+    driver-class-name: ${DB_DRIVER:org.h2.Driver}
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:create-drop}
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: ${JPA_DIALECT:org.hibernate.dialect.H2Dialect}
+  h2:
+    console:
+      enabled: ${H2_CONSOLE:false}
+
+app:
+  auth:
+    token: ${AUTH_TOKEN:dev-token-change-in-prod}
+  inference:
+    vital-risk-time-window-hours: ${VITAL_RISK_TIME_WINDOW_HOURS:24}
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
