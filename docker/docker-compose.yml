@@ -14,6 +14,11 @@ services:
       - mysql_data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "vital", "-psecret" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     build:
@@ -31,7 +36,8 @@ services:
       AUTH_TOKEN: dev-token-change-in-prod
       VITAL_RISK_TIME_WINDOW_HOURS: 24
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 volumes:
   mysql_data:
