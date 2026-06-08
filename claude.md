@@ -57,4 +57,22 @@ GlobalExceptionHandler에도 ObjectOptimisticLockingFailureException 핸들러�
 
 ---
 
+## 4. recorded_at 타입 선택 (API 경계)
+
+**Prompt 요약**
+> "recorded_at이 ISO 8601 UTC 형식('Z' suffix)으로 들어올 때 DTO 타입을 LocalDateTime vs Instant 중 어떤 걸 써야 하는가?"
+
+**Claude 제안**
+- LocalDateTime: Jackson 설정으로 파싱 가능하지만 timezone 정보 손실
+- Instant: UTC 기준 시각을 명시적으로 표현, API 경계에서 의미가 명확
+
+**채택**: API DTO는 `Instant`, DB 저장은 `LocalDateTime(UTC)` — 서비스 레이어에서 변환
+
+**이유**
+LocalDateTime은 timezone 정보가 없어 "Z"가 붙은 ISO 8601 문자열을 Jackson이 기본 설정으로 파싱하지 못한다.
+Instant를 DTO에 쓰면 클라이언트가 보내는 UTC 타임스탬프의 의미가 타입 수준에서 명확해지고,
+서비스 레이어에서 `LocalDateTime.ofInstant(instant, ZoneOffset.UTC)`로 변환하여 DB에 저장한다.
+
+---
+
 <!-- 이후 설계 결정 포인트마다 항목 추가 -->

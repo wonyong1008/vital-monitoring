@@ -15,6 +15,10 @@ spring:
   h2:
     console:
       enabled: ${H2_CONSOLE:false}
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+    time-zone: UTC
 
 app:
   auth:
