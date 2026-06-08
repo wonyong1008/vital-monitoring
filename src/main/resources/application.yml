@@ -1,20 +1,17 @@
 spring:
   datasource:
-    url: ${DB_URL:jdbc:h2:mem:vitaldb;MODE=MySQL;DB_CLOSE_DELAY=-1}
-    username: ${DB_USERNAME:sa}
-    password: ${DB_PASSWORD:}
-    driver-class-name: ${DB_DRIVER:org.h2.Driver}
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: ${DB_DRIVER:com.mysql.cj.jdbc.Driver}
   jpa:
     hibernate:
-      ddl-auto: ${JPA_DDL_AUTO:create-drop}
+      ddl-auto: ${JPA_DDL_AUTO:validate}
     show-sql: ${JPA_SHOW_SQL:false}
     properties:
       hibernate:
         format_sql: true
-        dialect: ${JPA_DIALECT:org.hibernate.dialect.H2Dialect}
-  h2:
-    console:
-      enabled: ${H2_CONSOLE:false}
+        dialect: ${JPA_DIALECT:org.hibernate.dialect.MySQLDialect}
   jackson:
     serialization:
       write-dates-as-timestamps: false
@@ -22,7 +19,7 @@ spring:
 
 app:
   auth:
-    token: ${AUTH_TOKEN:dev-token-change-in-prod}
+    token: ${AUTH_TOKEN}
   inference:
     vital-risk-time-window-hours: ${VITAL_RISK_TIME_WINDOW_HOURS:24}
 
