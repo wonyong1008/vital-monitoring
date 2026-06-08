@@ -33,7 +33,7 @@ public class Vital {
     private LocalDateTime recordedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false, columnDefinition = "VARCHAR(10)")
     private VitalType vitalType;
 
     @Column(nullable = false)

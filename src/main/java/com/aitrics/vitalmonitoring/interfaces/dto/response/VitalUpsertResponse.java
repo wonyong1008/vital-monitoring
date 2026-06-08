@@ -13,9 +13,9 @@ public record VitalUpsertResponse(
         Double value,
         Long version
 ) {
-    public static VitalUpsertResponse from(Vital vital) {
+    public static VitalUpsertResponse from(String patientId, Vital vital) {
         return new VitalUpsertResponse(
-                vital.getPatient().getPatientId(),
+                patientId,
                 vital.getRecordedAt().toInstant(ZoneOffset.UTC),
                 vital.getVitalType(),
                 vital.getValue(),
