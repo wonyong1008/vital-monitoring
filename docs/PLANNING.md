@@ -85,7 +85,7 @@ JPA `@Version` Optimistic Lock이 단일 PK 환경에서 명확하게 동작하�
 CREATE TABLE patients (
     patient_id  VARCHAR(20)  NOT NULL,
     name        VARCHAR(100) NOT NULL,
-    gender      CHAR(1)      NOT NULL,
+    gender      VARCHAR(1)   NOT NULL,
     birth_date  DATE         NOT NULL,
     version     BIGINT       NOT NULL DEFAULT 0,
     created_at  DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
