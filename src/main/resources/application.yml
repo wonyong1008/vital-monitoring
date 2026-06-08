@@ -19,7 +19,12 @@ spring:
 
 app:
   auth:
-    token: ${AUTH_TOKEN}
+    username: ${AUTH_USERNAME:admin}
+    password: ${AUTH_PASSWORD:1234}
+  jwt:
+    secret: ${JWT_SECRET:dGhpcy1pcy1hLXZlcnktc2VjdXJlLXNlY3JldC1rZXktZm9yLXZpdGFsLW1vbml0b3Jpbmctc3lzdGVt}
+    access-token-expiry-ms: ${JWT_ACCESS_TOKEN_EXPIRY_MS:3600000}
+    refresh-token-expiry-ms: ${JWT_REFRESH_TOKEN_EXPIRY_MS:604800000}
   inference:
     vital-risk-time-window-hours: ${VITAL_RISK_TIME_WINDOW_HOURS:24}
 

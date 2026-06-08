@@ -31,7 +31,11 @@ services:
       DB_DRIVER: com.mysql.cj.jdbc.Driver
       JPA_DDL_AUTO: validate
       JPA_DIALECT: org.hibernate.dialect.MySQLDialect
-      AUTH_TOKEN: dev-token-change-in-prod
+      AUTH_USERNAME: admin
+      AUTH_PASSWORD: "1234"
+      JWT_SECRET: dGhpcy1pcy1hLXZlcnktc2VjdXJlLXNlY3JldC1rZXktZm9yLXZpdGFsLW1vbml0b3Jpbmctc3lzdGVt
+      JWT_ACCESS_TOKEN_EXPIRY_MS: 3600000
+      JWT_REFRESH_TOKEN_EXPIRY_MS: 604800000
       VITAL_RISK_TIME_WINDOW_HOURS: 24
     depends_on:
       db:
