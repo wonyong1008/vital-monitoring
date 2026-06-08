@@ -129,6 +129,57 @@ curl -X POST http://localhost:8080/api/v1/auth/refresh \
 
 ---
 
+## 기초 데이터 (시드)
+
+최초 실행 시 `docker/init.sql`이 자동으로 실행되어 아래 데이터가 삽입됩니다.
+(**DB 볼륨이 없을 때만 실행** — 재삽입이 필요하면 `docker compose down -v` 후 재시작)
+
+### 사전 등록된 환자
+
+| patient_id | 이름 | 성별 | 생년월일 |
+|---|---|---|---|
+| `P00001234` | 홍길동 | M | 1975-03-01 |
+| `P00005678` | 김영희 | F | 1990-06-15 |
+| `P00009999` | 이철수 | M | 1965-11-20 |
+| `P00000001` | 박지수 | F | 2000-01-10 |
+
+### Inference API 즉시 테스트
+
+Vital 데이터는 **현재 시각 기준 상대값**으로 삽입되어 언제 실행해도 24시간 윈도우 안에 들어옵니다.
+
+| patient_id | 예상 risk_level | 이유 |
+|---|---|---|
+| `P00001234` | `HIGH` | HR 평균 126 > 120, SBP 평균 84 < 90, SpO2 평균 88 < 90 |
+| `P00005678` | `MEDIUM` | HR 평균 124 > 120 (SBP·SpO2 정상) |
+| `P00009999` | `LOW` | 모든 수치 정상 범위 |
+| `P00000001` | `LOW` | Vital 데이터 없음 |
+
+```bash
+# HIGH 확인
+curl -X POST http://localhost:8080/api/v1/inference/vital-risk \
+  -H "Authorization: Bearer <token>" \
+  -H "Content-Type: application/json" \
+  -d '{"patient_id": "P00001234"}'
+```
+
+### Vital 조회 테스트
+
+`P00001234`에는 7일 전 과거 데이터도 포함되어 있어 기간 필터 테스트가 가능합니다.
+
+```bash
+# 최근 24시간 조회
+curl "http://localhost:8080/api/v1/patients/P00001234/vitals\
+?from=$(date -u -v-1d +%Y-%m-%dT%H:%M:%SZ)&to=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  -H "Authorization: Bearer <token>"
+
+# 7일 전 데이터 포함 조회
+curl "http://localhost:8080/api/v1/patients/P00001234/vitals\
+?from=$(date -u -v-8d +%Y-%m-%dT%H:%M:%SZ)&to=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+  -H "Authorization: Bearer <token>"
+```
+
+---
+
 ## API 목록
 
 | Method | Endpoint | 인증 | 설명 |
