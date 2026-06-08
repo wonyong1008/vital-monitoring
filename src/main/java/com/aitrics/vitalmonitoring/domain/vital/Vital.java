@@ -55,7 +55,7 @@ public class Vital {
         this.recordedAt = recordedAt;
         this.vitalType = vitalType;
         this.value = value;
-        this.version = 0L;
+        this.version = 1L;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }

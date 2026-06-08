@@ -69,7 +69,7 @@ Vital 데이터는 `(patient_id, recorded_at, vital_type)` 복합 식별자로 �
 ### 4-2. Vital UPSERT 전략
 
 `(patient_id, recorded_at, vital_type)` 복합 식별자로 기존 레코드를 조회 후:
-- 존재하지 않으면 → INSERT (version = 0 으로 시작)
+- 존재하지 않으면 → INSERT (version = 1 로 시작)
 - 존재하면 → version 검증 후 UPDATE
 
 ### 4-3. Vitals 테이블 기본키

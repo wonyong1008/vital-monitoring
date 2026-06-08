@@ -220,7 +220,7 @@ CREATE TABLE vitals (
 2. **JPA `@Version` 안전망** — `saveAndFlush()`로 DB 레벨 충돌도 트랜잭션 내에서 감지
 3. **GlobalExceptionHandler** — `ObjectOptimisticLockingFailureException` 핸들러로 최종 안전망
 
-INSERT 시 version은 `0`으로 시작하고, 매 UPDATE마다 JPA가 자동으로 `+1` 증가시킵니다.
+INSERT 시 version은 `1`로 시작하고, 매 UPDATE마다 JPA가 자동으로 `+1` 증가시킵니다.
 
 ---
 
