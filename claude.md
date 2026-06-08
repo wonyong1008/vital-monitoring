@@ -93,4 +93,17 @@ Instant를 DTO에 쓰면 클라이언트가 보내는 UTC 타임스탬프의 의
 
 ---
 
+## 6. application 레이어의 interfaces DTO 의존 (인지된 트레이드오프)
+
+**코드 리뷰에서 발견된 설계 이슈**
+PatientService, VitalService 등 application 레이어가 interfaces 레이어의 Request/Response DTO를 직접 참조하고 있다.
+순수 DDD에서는 application 레이어가 자체 Command/Result 객체를 가져야 한다.
+
+**미적용 이유**
+3~6시간 분량의 과제에서 Command 객체를 별도로 두면 불필요한 boilerplate가 증가한다.
+현재 서비스가 단일 애플리케이션으로 동작하며, interfaces DTO가 곧 유스케이스 입력과 동일한 구조이므로 DDD-lite 범위 내 허용 가능한 트레이드오프로 판단했다.
+실제 프로덕션 환경에서 멀티 채널(REST + gRPC 등)이 추가된다면 Command 분리가 필요하다.
+
+---
+
 <!-- 이후 설계 결정 포인트마다 항목 추가 -->

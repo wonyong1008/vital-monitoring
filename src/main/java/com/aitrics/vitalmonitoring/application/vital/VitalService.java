@@ -67,7 +67,7 @@ public class VitalService {
                 .vitalType(request.vital_type())
                 .value(request.value())
                 .build();
-        return VitalUpsertResponse.from(vitalRepository.save(vital));
+        return VitalUpsertResponse.from(patient.getPatientId(), vitalRepository.save(vital));
     }
 
     private VitalUpsertResponse update(Vital vital, VitalUpsertRequest request) {
@@ -76,7 +76,7 @@ public class VitalService {
         }
         try {
             vital.update(request.value());
-            return VitalUpsertResponse.from(vitalRepository.saveAndFlush(vital));
+            return VitalUpsertResponse.from(request.patient_id(), vitalRepository.saveAndFlush(vital));
         } catch (ObjectOptimisticLockingFailureException e) {
             throw new OptimisticLockConflictException("동시 수정으로 인한 충돌이 발생했습니다. 다시 시도해주세요.");
         }
