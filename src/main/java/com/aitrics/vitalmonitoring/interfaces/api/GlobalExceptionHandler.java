@@ -6,6 +6,8 @@ import com.aitrics.vitalmonitoring.domain.exception.PatientNotFoundException;
 import com.aitrics.vitalmonitoring.interfaces.dto.response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,6 +36,18 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleOptimisticLockConflict(OptimisticLockConflictException e) {
         return ErrorResponse.of(HttpStatus.CONFLICT.value(), e.getMessage());
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleMessageNotReadable(HttpMessageNotReadableException e) {
+        return ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), "요청 본문 형식이 올바르지 않습니다.");
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleDataIntegrityViolation(DataIntegrityViolationException e) {
+        return ErrorResponse.of(HttpStatus.CONFLICT.value(), "이미 존재하는 데이터입니다.");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

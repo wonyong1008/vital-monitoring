@@ -1,5 +1,8 @@
 package com.aitrics.vitalmonitoring.interfaces.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public record TokenResponse(
         String access_token,
         String refresh_token,
