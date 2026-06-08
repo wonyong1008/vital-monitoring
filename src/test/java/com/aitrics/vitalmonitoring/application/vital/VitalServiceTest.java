@@ -77,7 +77,7 @@ class VitalServiceTest {
     @DisplayName("Vital UPDATE 성공 - 동일 복합키 데이터 존재, version 일치")
     void upsert_update_success() {
         Vital existing = Vital.builder().patient(patient).recordedAt(recordedAtDt).vitalType(VitalType.HR).value(100.0).build();
-        VitalUpsertRequest request = new VitalUpsertRequest("P00001234", recordedAt, VitalType.HR, 120.0, 0L);
+        VitalUpsertRequest request = new VitalUpsertRequest("P00001234", recordedAt, VitalType.HR, 120.0, 1L);
 
         given(patientRepository.findById("P00001234")).willReturn(Optional.of(patient));
         given(vitalRepository.findByCompositeKey("P00001234", recordedAtDt, VitalType.HR)).willReturn(Optional.of(existing));

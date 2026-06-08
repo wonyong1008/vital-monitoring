@@ -1,4 +1,4 @@
-package com.aitrics.vitalmonitoring.infrastructure.persistence;
+package com.aitrics.vitalmonitoring.infrastructure.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;

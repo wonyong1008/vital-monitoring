@@ -151,7 +151,7 @@ CREATE TABLE patients (
     name        VARCHAR(100) NOT NULL,
     gender      VARCHAR(1)   NOT NULL COMMENT 'M / F',
     birth_date  DATE         NOT NULL,
-    version     BIGINT       NOT NULL DEFAULT 0,
+    version     BIGINT       NOT NULL DEFAULT 1,
     created_at  DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     updated_at  DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     PRIMARY KEY (patient_id)
@@ -163,7 +163,7 @@ CREATE TABLE vitals (
     recorded_at DATETIME(6)  NOT NULL,
     vital_type  VARCHAR(10)  NOT NULL COMMENT 'HR / RR / SBP / DBP / SpO2 / BT',
     value       DOUBLE       NOT NULL,
-    version     BIGINT       NOT NULL DEFAULT 0,
+    version     BIGINT       NOT NULL DEFAULT 1,
     created_at  DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     updated_at  DATETIME(6)  NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     PRIMARY KEY (id),
