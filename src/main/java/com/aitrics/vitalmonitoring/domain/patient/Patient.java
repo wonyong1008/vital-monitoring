@@ -44,7 +44,7 @@ public class Patient {
         this.name = name;
         this.gender = gender;
         this.birthDate = birthDate;
-        this.version = 0L;
+        this.version = 1L;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }

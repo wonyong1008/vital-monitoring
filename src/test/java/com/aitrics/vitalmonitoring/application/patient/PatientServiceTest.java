@@ -70,7 +70,7 @@ class PatientServiceTest {
     @Test
     @DisplayName("환자 정보 수정 성공")
     void update_success() {
-        PatientUpdateRequest request = new PatientUpdateRequest("홍길순", "F", LocalDate.of(1975, 3, 1), 0L);
+        PatientUpdateRequest request = new PatientUpdateRequest("홍길순", "F", LocalDate.of(1975, 3, 1), 1L);
         given(patientRepository.findById("P00001234")).willReturn(Optional.of(patient));
         given(patientRepository.saveAndFlush(any(Patient.class))).willReturn(patient);
 
@@ -82,7 +82,7 @@ class PatientServiceTest {
     @Test
     @DisplayName("존재하지 않는 환자 수정 시 404 예외 발생")
     void update_patientNotFound_throws404() {
-        PatientUpdateRequest request = new PatientUpdateRequest("홍길순", "F", LocalDate.of(1975, 3, 1), 0L);
+        PatientUpdateRequest request = new PatientUpdateRequest("홍길순", "F", LocalDate.of(1975, 3, 1), 1L);
         given(patientRepository.findById("P99999999")).willReturn(Optional.empty());
 
         assertThatThrownBy(() -> patientService.update("P99999999", request))
