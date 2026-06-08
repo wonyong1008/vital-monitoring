@@ -106,4 +106,38 @@ PatientService, VitalService 등 application 레이어가 interfaces 레이어�
 
 ---
 
+## 7. VitalUpsertResponse에서 Patient 연관관계 접근 방식
+
+**코드 리뷰에서 발견된 이슈**
+> "`VitalUpsertResponse.from(vital)`에서 `vital.getPatient().getPatientId()`를 호출하는데, Patient가 `@ManyToOne(LAZY)`라 트랜잭션 외부에서 호출 시 LazyInitializationException이 발생할 수 있다."
+
+**Claude 제안**
+- 방식 A: `@ManyToOne(fetch = EAGER)`로 변경
+- 방식 B: `from()` 메서드 시그니처를 `from(String patientId, Vital vital)`로 변경해 연관관계에 의존하지 않도록 분리
+
+**채택**: 방식 B
+
+**이유**
+EAGER 로딩은 Vital 조회 시 항상 Patient를 JOIN하게 되어 불필요한 쿼리가 발생한다.
+patientId는 서비스 레이어에서 이미 알고 있는 값이므로, 직접 전달하는 방식이 안전하고 명확하다.
+
+---
+
+## 8. Hibernate 6의 @Enumerated(EnumType.STRING) 타입 매핑 변경
+
+**실행 중 발견된 이슈**
+> "Schema-validation: found [varchar], but expecting [enum] — Hibernate 6에서 `@Enumerated(EnumType.STRING)`이 MySQL ENUM 타입을 기대하도록 동작이 바뀌었다."
+
+**Claude 제안**
+- 방식 A: DDL을 MySQL ENUM 타입으로 변경
+- 방식 B: 엔티티에 `@Column(columnDefinition = "VARCHAR(10)")`을 명시해 VARCHAR 강제
+
+**채택**: 방식 B
+
+**이유**
+MySQL ENUM은 값 추가 시 ALTER TABLE이 필요해 운영 환경에서 부담이 크다.
+VARCHAR로 저장하면 VitalType 변경에 유연하게 대응할 수 있고, columnDefinition 명시로 Hibernate 6의 기본 동작을 명확하게 오버라이드할 수 있다.
+
+---
+
 <!-- 이후 설계 결정 포인트마다 항목 추가 -->
